@@ -26,6 +26,7 @@ public class myFIRSTJavaOpMode extends LinearOpMode {
         //Wait until the play button is pressed on the Driver Hub
         waitForStart();
         //The driver presses play
+        //Random Test Comment
         double tgtPower = 0;
         while (opModeIsActive()) {
             tgtPower = -this.gamepad1.left_stick_y;
