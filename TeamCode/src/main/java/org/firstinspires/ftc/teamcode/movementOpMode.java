@@ -29,7 +29,6 @@ public class movementOpMode extends LinearOpMode{
         telemetry.update();
         waitForStart();
         runtime.reset();
-        waitForStart();
         while (opModeIsActive()) {
             double max;
             double axial   = -gamepad1.left_stick_y;
@@ -55,6 +54,8 @@ public class movementOpMode extends LinearOpMode{
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            telemetry.addData("axial, lateral, yaw", "%4.2f, %4.2f, %4.2f", axial, lateral, yaw);
+            telemetry.addData("Gamepad1 Status", "" +  gamepad1.x + " " + gamepad1.a);
             telemetry.update();
         }
     }
