@@ -7,7 +7,9 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+@Disabled
 public class myFIRSTJavaOpMode extends LinearOpMode {
     private Gyroscope imu;
     private DcMotor motorTest;
