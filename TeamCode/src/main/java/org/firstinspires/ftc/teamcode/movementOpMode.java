@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @Disabled
 @TeleOp
-public class drivetrainjavaOpMode extends LinearOpMode{
+public class movementOpMode extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
