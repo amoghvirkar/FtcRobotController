@@ -14,17 +14,21 @@ public class movementOpMode extends LinearOpMode{
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
+    private DcMotor viperPulley = null;
 
     @Override
     public void runOpMode() {
+        int viperPulleyPos = 0; //0:ground, 1:low, 2:medium, 3:top
         leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
         leftBackDrive  = hardwareMap.get(DcMotor.class, "left_back_drive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
+        viperPulley = hardwareMap.get(DcMotor.class, "viper_slide_controller");
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        viperPulley.setDirection(DcMotor.Direction.REVERSE);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
@@ -38,19 +42,66 @@ public class movementOpMode extends LinearOpMode{
             double rightFrontPower = axial - lateral - yaw;
             double leftBackPower   = axial - lateral + yaw;
             double rightBackPower  = axial + lateral - yaw;
+            double viperPulleyPower =
             max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
             max = Math.max(max, Math.abs(leftBackPower));
             max = Math.max(max, Math.abs(rightBackPower));
+            leftFrontDrive.setPower(leftFrontPower);
+            rightFrontDrive.setPower(rightFrontPower);
+            leftBackDrive.setPower(leftBackPower);
+            rightBackDrive.setPower(rightBackPower);
             if (max > 1.0) {
                 leftFrontPower  /= max;
                 rightFrontPower /= max;
                 leftBackPower   /= max;
                 rightBackPower  /= max;
             }
-            leftFrontDrive.setPower(leftFrontPower);
-            rightFrontDrive.setPower(rightFrontPower);
-            leftBackDrive.setPower(leftBackPower);
-            rightBackDrive.setPower(rightBackPower);
+            if (gamepad2.a = true) {
+                if (viperPulleyPos == 0) {
+                    //Slide does not move
+                } else if (viperPulleyPos == 1) {
+                    //Slide moves downward to Ground Position
+                } else if (viperPulleyPos == 2) {
+                    //Slide moves downward to Ground
+                } else if (viperPulleyPos == 3) {
+                    //Slide moves downward to ground
+                }
+                viperPulleyPos = 0;
+            } else if (gamepad2.b = true) {
+                if (viperPulleyPos == 1) {
+                    //Slide does not move
+                } else if (viperPulleyPos == 0) {
+                    //Slide moves up
+                } else if (viperPulleyPos == 2) {
+                    //Slide moves down
+                } else if (viperPulleyPos == 3) {
+                    //Slide moves down
+                }
+                viperPulleyPos = 1;
+            } else if (gamepad2.x = true) {
+                if (viperPulleyPos == 2) {
+                    //Slide does not move
+                } else if (viperPulleyPos == 0) {
+                    //Slide moves up
+                } else if (viperPulleyPos == 1) {
+                    //Slide moves up
+                } else if (viperPulleyPos == 3) {
+                    //Slide moves down
+                }
+                viperPulleyPos = 2;
+            } else if (gamepad2.y = true) {
+                if (viperPulleyPos == 3) {
+                    //Slide does not move
+                } else if (viperPulleyPos == 0) {
+                    //Slide moves up
+                } else if (viperPulleyPos == 1) {
+                    //Slide moves up
+                } else if (viperPulleyPos == 2) {
+                    //Slide moves up
+                }
+                viperPulleyPos = 3;
+            }
+
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
