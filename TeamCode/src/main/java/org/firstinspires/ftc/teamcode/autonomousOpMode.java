@@ -44,6 +44,16 @@ public class autonomousOpMode extends LinearOpMode{
     }
     private void pickUpCone(int junction) throws InterruptedException {
         int junctionCounter = 0;
+        //close claw
+        while (junctionCounter != junction) {
+            viperPulley.setPower(1);
+            TimeUnit.SECONDS.sleep(2);
+            viperPulley.setPower(0);
+            junctionCounter++;
+        }
+    }
+    private void dropCone() throws InterruptedException{
+        //open the claw
     }
     public void runOpMode() throws InterruptedException {
         leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
@@ -67,7 +77,7 @@ public class autonomousOpMode extends LinearOpMode{
             quarterTurn(2);
             moveForward(5);
             quarterTurn(3);
-            //place cone
+            //drop cone
         }
     }
 }
