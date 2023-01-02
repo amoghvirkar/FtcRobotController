@@ -4,10 +4,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name="Basic: Omni Linear OpMode", group="Linear Opmode")
+@TeleOp(name="Ice Code TeleOp", group="Linear Opmode")
 public class movementOpMode extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive = null;
@@ -28,21 +29,23 @@ public class movementOpMode extends LinearOpMode{
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        viperPulley.setDirection(DcMotor.Direction.REVERSE);
+        viperPulley.setDirection(DcMotor.Direction.FORWARD);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
         runtime.reset();
         while (opModeIsActive()) {
             double max;
+            double viperUp = gamepad1.right_trigger;
+            double viperDown = gamepad1.left_trigger;
             double axial   = -gamepad1.left_stick_y;
             double lateral =  gamepad1.left_stick_x;
             double yaw     =  gamepad1.right_stick_x;
+            double viperPower = viperUp - viperDown;
             double leftFrontPower  = axial + lateral + yaw;
             double rightFrontPower = axial - lateral - yaw;
             double leftBackPower   = axial - lateral + yaw;
             double rightBackPower  = axial + lateral - yaw;
-            double viperPulleyPower =
             max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
             max = Math.max(max, Math.abs(leftBackPower));
             max = Math.max(max, Math.abs(rightBackPower));
@@ -50,13 +53,14 @@ public class movementOpMode extends LinearOpMode{
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
+            viperPulley.setPower(viperPower);
             if (max > 1.0) {
                 leftFrontPower  /= max;
                 rightFrontPower /= max;
                 leftBackPower   /= max;
                 rightBackPower  /= max;
             }
-            if (gamepad2.a = true) {
+            if (gamepad1.a = true) {
                 if (viperPulleyPos == 0) {
                     //Slide does not move
                 } else if (viperPulleyPos == 1) {
@@ -67,7 +71,7 @@ public class movementOpMode extends LinearOpMode{
                     //Slide moves downward to ground
                 }
                 viperPulleyPos = 0;
-            } else if (gamepad2.b = true) {
+            } else if (gamepad1.b = true) {
                 if (viperPulleyPos == 1) {
                     //Slide does not move
                 } else if (viperPulleyPos == 0) {
@@ -78,7 +82,7 @@ public class movementOpMode extends LinearOpMode{
                     //Slide moves down
                 }
                 viperPulleyPos = 1;
-            } else if (gamepad2.x = true) {
+            } else if (gamepad1.x = true) {
                 if (viperPulleyPos == 2) {
                     //Slide does not move
                 } else if (viperPulleyPos == 0) {
@@ -89,7 +93,7 @@ public class movementOpMode extends LinearOpMode{
                     //Slide moves down
                 }
                 viperPulleyPos = 2;
-            } else if (gamepad2.y = true) {
+            } else if (gamepad1.y = true) {
                 if (viperPulleyPos == 3) {
                     //Slide does not move
                 } else if (viperPulleyPos == 0) {
@@ -101,11 +105,11 @@ public class movementOpMode extends LinearOpMode{
                 }
                 viperPulleyPos = 3;
             }
-
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
             telemetry.addData("axial, lateral, yaw", "%4.2f, %4.2f, %4.2f", axial, lateral, yaw);
+            telemetry.addData("Linear Slide", "%4.2f, %4.2f", viperPower);
             telemetry.addData("Gamepad1 Status", "" +  gamepad1.x + " " + gamepad1.a);
             telemetry.update();
         }
