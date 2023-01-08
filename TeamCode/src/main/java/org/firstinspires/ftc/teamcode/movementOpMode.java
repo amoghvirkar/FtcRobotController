@@ -34,6 +34,7 @@ public class movementOpMode extends LinearOpMode{
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         viperPulley.setDirection(DcMotor.Direction.FORWARD);
+        claw.setDirection(DcMotorSimple.Direction.FORWARD);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
