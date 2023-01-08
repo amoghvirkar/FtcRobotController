@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import java.util.concurrent.TimeUnit;
 
 @TeleOp(name="Ice Code TeleOp", group="Linear Opmode")
 public class movementOpMode extends LinearOpMode{
@@ -15,21 +17,24 @@ public class movementOpMode extends LinearOpMode{
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-    private DcMotor viperPulley = null;
+    //private DcMotor viperPulley = null;
+    //private CRServo claw = null;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException{
         int viperPulleyPos = 0; //0:ground, 1:low, 2:medium, 3:top
         leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
         leftBackDrive  = hardwareMap.get(DcMotor.class, "left_back_drive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
-        viperPulley = hardwareMap.get(DcMotor.class, "viper_slide_controller");
+        //viperPulley = hardwareMap.get(DcMotor.class, "viper_slide_controller");
+        //claw = hardwareMap.get(CRServo.class, "claw");
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        viperPulley.setDirection(DcMotor.Direction.FORWARD);
+        //viperPulley.setDirection(DcMotor.Direction.FORWARD);
+        //claw.setDirection(DcMotorSimple.Direction.FORWARD);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
@@ -53,7 +58,7 @@ public class movementOpMode extends LinearOpMode{
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
-            viperPulley.setPower(viperPower);
+            //viperPulley.setPower(viperPower);
             if (max > 1.0) {
                 leftFrontPower  /= max;
                 rightFrontPower /= max;
@@ -61,49 +66,13 @@ public class movementOpMode extends LinearOpMode{
                 rightBackPower  /= max;
             }
             if (gamepad1.a = true) {
-                if (viperPulleyPos == 0) {
-                    //Slide does not move
-                } else if (viperPulleyPos == 1) {
-                    //Slide moves downward to Ground Position
-                } else if (viperPulleyPos == 2) {
-                    //Slide moves downward to Ground
-                } else if (viperPulleyPos == 3) {
-                    //Slide moves downward to ground
-                }
-                viperPulleyPos = 0;
+                //claw.setPower(0.5);
+                TimeUnit.SECONDS.sleep(1);
+                //claw.setPower(0);
             } else if (gamepad1.b = true) {
-                if (viperPulleyPos == 1) {
-                    //Slide does not move
-                } else if (viperPulleyPos == 0) {
-                    //Slide moves up
-                } else if (viperPulleyPos == 2) {
-                    //Slide moves down
-                } else if (viperPulleyPos == 3) {
-                    //Slide moves down
-                }
-                viperPulleyPos = 1;
-            } else if (gamepad1.x = true) {
-                if (viperPulleyPos == 2) {
-                    //Slide does not move
-                } else if (viperPulleyPos == 0) {
-                    //Slide moves up
-                } else if (viperPulleyPos == 1) {
-                    //Slide moves up
-                } else if (viperPulleyPos == 3) {
-                    //Slide moves down
-                }
-                viperPulleyPos = 2;
-            } else if (gamepad1.y = true) {
-                if (viperPulleyPos == 3) {
-                    //Slide does not move
-                } else if (viperPulleyPos == 0) {
-                    //Slide moves up
-                } else if (viperPulleyPos == 1) {
-                    //Slide moves up
-                } else if (viperPulleyPos == 2) {
-                    //Slide moves up
-                }
-                viperPulleyPos = 3;
+                //claw.setPower(-0.5);
+                TimeUnit.SECONDS.sleep(1);
+                //claw.setPower(0);
             }
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);

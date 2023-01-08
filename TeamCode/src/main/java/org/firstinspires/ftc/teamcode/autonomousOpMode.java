@@ -3,8 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import java.util.concurrent.TimeUnit;
 
@@ -16,14 +18,15 @@ public class autonomousOpMode extends LinearOpMode{
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
     private DcMotor viperPulley = null;
+    private CRServo claw = null;
     private void quarterTurn(int numTurns) throws InterruptedException {
         int turnCounter = 0;
         while (turnCounter<numTurns) {
-            leftFrontDrive.setPower(1);
-            leftBackDrive.setPower(1);
-            rightFrontDrive.setPower(-1);
-            rightBackDrive.setPower(-1);
-            TimeUnit.SECONDS.sleep(5);
+            leftFrontDrive.setPower(0.25);
+            leftBackDrive.setPower(0.25);
+            rightFrontDrive.setPower(-0.25);
+            rightBackDrive.setPower(-0.25);
+            TimeUnit.SECONDS.sleep(1);
             turnCounter++;
         }
         leftFrontDrive.setPower(0);
@@ -32,11 +35,11 @@ public class autonomousOpMode extends LinearOpMode{
         rightBackDrive.setPower(0);
     }
     private void moveForward(int time) throws InterruptedException {
-        leftFrontDrive.setPower(1);
-        leftBackDrive.setPower(1);
-        rightFrontDrive.setPower(1);
-        rightBackDrive.setPower(1);
-        TimeUnit.SECONDS.sleep(time);
+        leftFrontDrive.setPower(0.5);
+        leftBackDrive.setPower(0.5);
+        rightFrontDrive.setPower(0.5);
+        rightBackDrive.setPower(0.5);
+        TimeUnit.MILLISECONDS.sleep(time);
         leftFrontDrive.setPower(0);
         leftBackDrive.setPower(0);
         rightFrontDrive.setPower(0);
@@ -44,7 +47,9 @@ public class autonomousOpMode extends LinearOpMode{
     }
     private void pickUpCone(int junction) throws InterruptedException {
         int junctionCounter = 0;
-        //close claw
+        claw.setPower(0.5);
+        TimeUnit.SECONDS.sleep(1);
+        claw.setPower(0);
         while (junctionCounter != junction) {
             viperPulley.setPower(1);
             TimeUnit.SECONDS.sleep(2);
@@ -53,7 +58,9 @@ public class autonomousOpMode extends LinearOpMode{
         }
     }
     private void dropCone() throws InterruptedException{
-        //open the claw
+        claw.setPower(-0.5);
+        TimeUnit.SECONDS.sleep(1);
+        claw.setPower(0);
     }
     public void runOpMode() throws InterruptedException {
         leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
@@ -61,23 +68,22 @@ public class autonomousOpMode extends LinearOpMode{
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
         viperPulley = hardwareMap.get(DcMotor.class, "viper_slide_controller");
+        claw = hardwareMap.get(CRServo.class, "claw");
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         viperPulley.setDirection(DcMotorSimple.Direction.FORWARD);
+        claw.setDirection(DcMotorSimple.Direction.FORWARD);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
         runtime.reset();
         while (opModeIsActive()) {
-            moveForward(5);
-            quarterTurn(3);
-            //pick up cone
-            quarterTurn(2);
-            moveForward(5);
-            quarterTurn(3);
-            //drop cone
+            moveForward(2600);
+            quarterTurn(1);
+            moveForward(500);
+            break;
         }
     }
 }
