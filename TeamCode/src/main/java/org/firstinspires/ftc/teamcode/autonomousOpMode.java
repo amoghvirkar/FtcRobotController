@@ -15,7 +15,7 @@ public class autonomousOpMode extends LinearOpMode{
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-    //private DcMotor viperPulley = null;
+    private DcMotor viperPulley = null;
     private void quarterTurn(int numTurns) throws InterruptedException {
         int turnCounter = 0;
         while (turnCounter<numTurns) {
@@ -47,9 +47,9 @@ public class autonomousOpMode extends LinearOpMode{
         int junctionCounter = 0;
         //close claw
         while (junctionCounter != junction) {
-            //viperPulley.setPower(1);
+            viperPulley.setPower(1);
             TimeUnit.SECONDS.sleep(2);
-            //viperPulley.setPower(0);
+            viperPulley.setPower(0);
             junctionCounter++;
         }
     }
@@ -61,12 +61,12 @@ public class autonomousOpMode extends LinearOpMode{
         leftBackDrive  = hardwareMap.get(DcMotor.class, "left_back_drive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
-        //viperPulley = hardwareMap.get(DcMotor.class, "viper_slide_controller");
+        viperPulley = hardwareMap.get(DcMotor.class, "viper_slide_controller");
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        //viperPulley.setDirection(DcMotorSimple.Direction.FORWARD);
+        viperPulley.setDirection(DcMotorSimple.Direction.FORWARD);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
