@@ -17,8 +17,8 @@ public class movementOpMode extends LinearOpMode{
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-    private DcMotor viperPulley = null;
-    private CRServo claw = null;
+    //private DcMotor viperPulley = null;
+    //private CRServo claw = null;
 
     @Override
     public void runOpMode() throws InterruptedException{
@@ -27,14 +27,14 @@ public class movementOpMode extends LinearOpMode{
         leftBackDrive  = hardwareMap.get(DcMotor.class, "left_back_drive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
-        viperPulley = hardwareMap.get(DcMotor.class, "viper_slide_controller");
-        claw = hardwareMap.get(CRServo.class, "claw");
+        //viperPulley = hardwareMap.get(DcMotor.class, "viper_slide_controller");
+        //claw = hardwareMap.get(CRServo.class, "claw");
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        viperPulley.setDirection(DcMotor.Direction.FORWARD);
-        claw.setDirection(DcMotorSimple.Direction.FORWARD);
+        //viperPulley.setDirection(DcMotor.Direction.FORWARD);
+        //claw.setDirection(DcMotorSimple.Direction.FORWARD);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
@@ -58,7 +58,7 @@ public class movementOpMode extends LinearOpMode{
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
-            viperPulley.setPower(viperPower);
+            //viperPulley.setPower(viperPower);
             if (max > 1.0) {
                 leftFrontPower  /= max;
                 rightFrontPower /= max;
@@ -66,13 +66,13 @@ public class movementOpMode extends LinearOpMode{
                 rightBackPower  /= max;
             }
             if (gamepad1.a = true) {
-                claw.setPower(0.5);
+                //claw.setPower(0.5);
                 TimeUnit.SECONDS.sleep(1);
-                claw.setPower(0);
+                //claw.setPower(0);
             } else if (gamepad1.b = true) {
-                claw.setPower(-0.5);
+                //claw.setPower(-0.5);
                 TimeUnit.SECONDS.sleep(1);
-                claw.setPower(0);
+                //claw.setPower(0);
             }
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
