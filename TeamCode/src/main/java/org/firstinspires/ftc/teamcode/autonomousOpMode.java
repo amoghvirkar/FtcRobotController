@@ -15,15 +15,15 @@ public class autonomousOpMode extends LinearOpMode{
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-    private DcMotor viperPulley = null;
+    //private DcMotor viperPulley = null;
     private void quarterTurn(int numTurns) throws InterruptedException {
         int turnCounter = 0;
         while (turnCounter<numTurns) {
-            leftFrontDrive.setPower(1);
-            leftBackDrive.setPower(1);
-            rightFrontDrive.setPower(-1);
-            rightBackDrive.setPower(-1);
-            TimeUnit.SECONDS.sleep(5);
+            leftFrontDrive.setPower(0.25);
+            leftBackDrive.setPower(0.25);
+            rightFrontDrive.setPower(-0.25);
+            rightBackDrive.setPower(-0.25);
+            TimeUnit.SECONDS.sleep(1);
             turnCounter++;
         }
         leftFrontDrive.setPower(0);
@@ -32,11 +32,12 @@ public class autonomousOpMode extends LinearOpMode{
         rightBackDrive.setPower(0);
     }
     private void moveForward(int time) throws InterruptedException {
-        leftFrontDrive.setPower(1);
-        leftBackDrive.setPower(1);
-        rightFrontDrive.setPower(1);
-        rightBackDrive.setPower(1);
-        TimeUnit.SECONDS.sleep(time);
+        //6 ft/s
+        leftFrontDrive.setPower(0.5);
+        leftBackDrive.setPower(0.5);
+        rightFrontDrive.setPower(0.5);
+        rightBackDrive.setPower(0.5);
+        TimeUnit.MILLISECONDS.sleep(time);
         leftFrontDrive.setPower(0);
         leftBackDrive.setPower(0);
         rightFrontDrive.setPower(0);
@@ -46,9 +47,9 @@ public class autonomousOpMode extends LinearOpMode{
         int junctionCounter = 0;
         //close claw
         while (junctionCounter != junction) {
-            viperPulley.setPower(1);
+            //viperPulley.setPower(1);
             TimeUnit.SECONDS.sleep(2);
-            viperPulley.setPower(0);
+            //viperPulley.setPower(0);
             junctionCounter++;
         }
     }
@@ -60,24 +61,21 @@ public class autonomousOpMode extends LinearOpMode{
         leftBackDrive  = hardwareMap.get(DcMotor.class, "left_back_drive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
-        viperPulley = hardwareMap.get(DcMotor.class, "viper_slide_controller");
+        //viperPulley = hardwareMap.get(DcMotor.class, "viper_slide_controller");
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        viperPulley.setDirection(DcMotorSimple.Direction.FORWARD);
+        //viperPulley.setDirection(DcMotorSimple.Direction.FORWARD);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
         runtime.reset();
         while (opModeIsActive()) {
-            moveForward(5);
-            quarterTurn(3);
-            //pick up cone
-            quarterTurn(2);
-            moveForward(5);
-            quarterTurn(3);
-            //drop cone
+            moveForward(2600);
+            quarterTurn(1);
+            moveForward(500);
+            break;
         }
     }
 }
