@@ -19,48 +19,61 @@ public class autonomousOpMode extends LinearOpMode{
     private DcMotor rightBackDrive = null;
     private DcMotor viperPulley = null;
     private CRServo claw = null;
-    private void quarterTurn(int numTurns) throws InterruptedException {
-        int turnCounter = 0;
-        while (turnCounter<numTurns) {
-            leftFrontDrive.setPower(0.25);
-            leftBackDrive.setPower(0.25);
-            rightFrontDrive.setPower(-0.25);
-            rightBackDrive.setPower(-0.25);
-            TimeUnit.SECONDS.sleep(1);
-            turnCounter++;
-        }
+    private CRServo claw2 = null;
+    private void turn(int ticks) throws InterruptedException {
+        leftFrontDrive.setTargetPosition(ticks);
+        leftBackDrive.setTargetPosition(ticks);
+        rightFrontDrive.setTargetPosition(ticks);
+        rightBackDrive.setTargetPosition(ticks);
+        leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFrontDrive.setPower(0.25);
+        leftBackDrive.setPower(0.25);
+        rightFrontDrive.setPower(-0.25);
+        rightBackDrive.setPower(-0.25);
         leftFrontDrive.setPower(0);
         leftBackDrive.setPower(0);
         rightFrontDrive.setPower(0);
         rightBackDrive.setPower(0);
     }
-    private void moveForward(int time) throws InterruptedException {
-        leftFrontDrive.setPower(0.5);
-        leftBackDrive.setPower(0.5);
-        rightFrontDrive.setPower(0.5);
-        rightBackDrive.setPower(0.5);
-        TimeUnit.MILLISECONDS.sleep(time);
+    private void moveForward(int ticks) throws InterruptedException {
+        leftFrontDrive.setTargetPosition(ticks);
+        leftBackDrive.setTargetPosition(ticks);
+        rightFrontDrive.setTargetPosition(ticks);
+        rightBackDrive.setTargetPosition(ticks);
+        leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFrontDrive.setPower(0.25);
+        leftBackDrive.setPower(0.25);
+        rightFrontDrive.setPower(0.25);
+        rightBackDrive.setPower(0.25);
         leftFrontDrive.setPower(0);
         leftBackDrive.setPower(0);
         rightFrontDrive.setPower(0);
         rightBackDrive.setPower(0);
     }
-    private void pickUpCone(int junction) throws InterruptedException {
-        int junctionCounter = 0;
-        claw.setPower(0.5);
-        TimeUnit.SECONDS.sleep(1);
+    private void pickUpCone() throws InterruptedException {
         claw.setPower(0);
-        while (junctionCounter != junction) {
-            viperPulley.setPower(1);
-            TimeUnit.SECONDS.sleep(2);
-            viperPulley.setPower(0);
-            junctionCounter++;
-        }
+        claw2.setPower(-0.35);
+        viperPulley.setTargetPosition(2500);
+        viperPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        viperPulley.setPower(0.25);
+        viperPulley.setPower(0);
     }
     private void dropCone() throws InterruptedException{
-        claw.setPower(-0.5);
+        claw.setPower(-0.4);
+        claw2.setPower(0.15);
         TimeUnit.SECONDS.sleep(1);
         claw.setPower(0);
+        claw2.setPower(-0.35);
+        viperPulley.setTargetPosition(-2500);
+        viperPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        viperPulley.setPower(0.25);
+        viperPulley.setPower(0);
     }
     public void runOpMode() throws InterruptedException {
         leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
@@ -69,6 +82,7 @@ public class autonomousOpMode extends LinearOpMode{
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
         viperPulley = hardwareMap.get(DcMotor.class, "viper_slide_controller");
         claw = hardwareMap.get(CRServo.class, "claw");
+        claw2 = hardwareMap.get(CRServo.class, "claw2");
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -80,9 +94,7 @@ public class autonomousOpMode extends LinearOpMode{
         waitForStart();
         runtime.reset();
         while (opModeIsActive()) {
-            moveForward(2600);
-            quarterTurn(1);
-            moveForward(500);
+            moveForward(1800);
             break;
         }
     }
