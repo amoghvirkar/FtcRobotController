@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 @TeleOp(name="Ice Code TeleOp", group="Linear Opmode")
 public class movementOpMode extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
-    //private DcMotor leftFrontDrive = null;
+    private DcMotor leftFrontDrive = null;
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
@@ -22,18 +22,18 @@ public class movementOpMode extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
         int position = 0;
-        //leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
+        leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
         leftBackDrive  = hardwareMap.get(DcMotor.class, "left_back_drive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
         viperPulley = hardwareMap.get(DcMotor.class, "left_front_drive");
         CRServo claw = hardwareMap.get(CRServo.class, "claw");
         CRServo claw2 = hardwareMap.get(CRServo.class, "claw2");
-        //leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        viperPulley.setDirection(DcMotor.Direction.FORWARD);
+        viperPulley.setDirection(DcMotor.Direction.REVERSE);
         claw.setDirection(DcMotorSimple.Direction.FORWARD);
         claw2.setDirection(DcMotorSimple.Direction.FORWARD);
         telemetry.addData("Status", "Initialized");
@@ -42,12 +42,9 @@ public class movementOpMode extends LinearOpMode{
         runtime.reset();
         while (opModeIsActive()) {
             double max;
-            double viperUp = gamepad1.right_trigger;
-            double viperDown = gamepad1.left_trigger;
             double axial   = -gamepad1.left_stick_y;
             double lateral =  gamepad1.left_stick_x;
             double yaw     =  gamepad1.right_stick_x;
-            double viperPower = viperUp - viperDown;
             double leftFrontPower  = axial + lateral + yaw;
             double rightFrontPower = axial - lateral - yaw;
             double leftBackPower   = axial - lateral + yaw;
@@ -55,17 +52,22 @@ public class movementOpMode extends LinearOpMode{
             max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
             max = Math.max(max, Math.abs(leftBackPower));
             max = Math.max(max, Math.abs(rightBackPower));
-            //leftFrontDrive.setPower(leftFrontPower);
+            leftFrontDrive.setPower(leftFrontPower);
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
-            viperPulley.setPower(viperPower);
+            if (gamepad2.right_trigger > 0) {
+                viperPulley.setPower(1);
+            } else if (gamepad2.left_trigger > 0) {
+                viperPulley.setPower(-0.5);
+            } else {
+                viperPulley.setPower(0.1);
+            }
             if (max > 1.0) {
                 leftFrontPower  /= max;
                 rightFrontPower /= max;
                 leftBackPower   /= max;
                 rightBackPower  /= max;
-                viperPower      /= max;
             }
             if (gamepad1.left_bumper == true && gamepad1.right_bumper == true) {
                 break;
