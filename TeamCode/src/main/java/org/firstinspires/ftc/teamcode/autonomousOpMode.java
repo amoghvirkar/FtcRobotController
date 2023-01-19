@@ -89,6 +89,7 @@ public class autonomousOpMode extends LinearOpMode{
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         viperPulley.setDirection(DcMotorSimple.Direction.FORWARD);
         claw.setDirection(DcMotorSimple.Direction.FORWARD);
+        claw2.setDirection(DcMotorSimple.Direction.FORWARD);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
