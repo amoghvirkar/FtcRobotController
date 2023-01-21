@@ -57,7 +57,7 @@ public class movementOpMode extends LinearOpMode{
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
             if (gamepad2.right_trigger > 0) {
-                viperPulley.setPower(1);
+                viperPulley.setPower(0.5);
             } else if (gamepad2.left_trigger > 0) {
                 viperPulley.setPower(-0.5);
             } else {

@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import java.util.concurrent.TimeUnit;
 
 @Autonomous(name = "Ice Code Autonomous", group = "Linear Opmode")
-public class autonomousOpMode extends LinearOpMode{
+public class autonomousRightOpMode extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive = null;
     private DcMotor leftBackDrive = null;
@@ -97,7 +97,7 @@ public class autonomousOpMode extends LinearOpMode{
         while (opModeIsActive()) {
             pickUpCone();
             moveForward(1800);
-            turn(900);
+            turn(2700);
             dropCone();
             turn(1800);
             moveForward(500);
