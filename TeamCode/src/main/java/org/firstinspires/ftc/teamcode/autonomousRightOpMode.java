@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import java.util.concurrent.TimeUnit;
 
-@Autonomous(name = "Ice Code Autonomous", group = "Linear Opmode")
+@Autonomous(name = "Ice Code Right Autonomous", group = "Linear Opmode")
 public class autonomousRightOpMode extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive = null;
@@ -29,14 +29,10 @@ public class autonomousRightOpMode extends LinearOpMode{
         leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftFrontDrive.setPower(0.25);
-        leftBackDrive.setPower(0.25);
-        rightFrontDrive.setPower(-0.25);
-        rightBackDrive.setPower(-0.25);
-        leftFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        rightBackDrive.setPower(0);
+        leftFrontDrive.setPower(-0.25);
+        leftBackDrive.setPower(-0.25);
+        rightFrontDrive.setPower(0.25);
+        rightBackDrive.setPower(0.25);
     }
     private void moveForward(int ticks) throws InterruptedException {
         leftFrontDrive.setTargetPosition(ticks);
@@ -51,10 +47,6 @@ public class autonomousRightOpMode extends LinearOpMode{
         leftBackDrive.setPower(0.25);
         rightFrontDrive.setPower(0.25);
         rightBackDrive.setPower(0.25);
-        leftFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        rightBackDrive.setPower(0);
     }
     private void pickUpCone() throws InterruptedException {
         claw.setPower(0);
@@ -62,7 +54,6 @@ public class autonomousRightOpMode extends LinearOpMode{
         viperPulley.setTargetPosition(2500);
         viperPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         viperPulley.setPower(0.25);
-        viperPulley.setPower(0);
     }
     private void dropCone() throws InterruptedException{
         claw.setPower(-0.4);
@@ -73,7 +64,6 @@ public class autonomousRightOpMode extends LinearOpMode{
         viperPulley.setTargetPosition(-2500);
         viperPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         viperPulley.setPower(0.25);
-        viperPulley.setPower(0);
     }
     public void runOpMode() throws InterruptedException {
         leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
